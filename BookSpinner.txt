@@ -1,0 +1,402 @@
+//activity main xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="117dp"
+        android:layout_marginBottom="677dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="Enter Name" />
+
+    <EditText
+        android:id="@+id/mobNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="117dp"
+        android:layout_marginBottom="616dp"
+        android:ems="10"
+        android:hint="Enter Mobile Num"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/shopDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="116dp"
+        android:layout_marginBottom="466dp"
+        android:ems="10"
+        android:onClick="selectDate"
+        android:hint="Enter Shopping Date"
+        android:inputType="text" />
+
+    <Spinner
+        android:id="@+id/bookChosen"
+        android:layout_width="318dp"
+        android:layout_height="57dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="53dp"
+        android:layout_marginBottom="540dp" />
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="178dp"
+        android:layout_marginBottom="377dp"
+        android:text="NEXT" />
+</RelativeLayout>
+
+//activity saveDetails xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".saveDetails">
+
+    <EditText
+        android:id="@+id/qty"
+        android:layout_width="229dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="99dp"
+        android:layout_marginBottom="672dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="Enter Quantity" />
+
+    <EditText
+        android:id="@+id/price"
+        android:layout_width="229dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="99dp"
+        android:layout_marginBottom="591dp"
+        android:ems="10"
+        android:hint="Enter Price"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="182dp"
+        android:layout_marginBottom="505dp"
+        android:text="SAVE" />
+
+    <Button
+        android:id="@+id/pBook"
+        android:layout_width="146dp"
+        android:layout_height="59dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="231dp"
+        android:layout_marginBottom="422dp"
+        android:text="Purchase Book" />
+
+    <Button
+        android:id="@+id/display"
+        android:layout_width="146dp"
+        android:layout_height="59dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="139dp"
+        android:layout_marginBottom="355dp"
+        android:text="DISPLAY" />
+
+    <Button
+        android:id="@+id/count"
+        android:layout_width="146dp"
+        android:layout_height="59dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="43dp"
+        android:layout_marginBottom="422dp"
+        android:text="Count" />
+
+    <TextView
+        android:id="@+id/show"
+        android:layout_width="329dp"
+        android:layout_height="254dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="42dp"
+        android:layout_marginBottom="51dp"
+        android:text="TextView"
+        android:textSize="20dp" />
+</RelativeLayout>
+
+//Mainactivity.java
+package com.example.booksystem;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import java.util.Calendar;
+import java.util.Date;
+
+public class MainActivity extends AppCompatActivity {
+    EditText username, userNum, dateBox;
+    String selectedDate, selectedBook;
+    Spinner bookName;
+    Button nextPage;
+    String[] bookNames = {"Harry Potter", "MAD"};
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        username = findViewById(R.id.name);
+        userNum = findViewById(R.id.mobNum);
+        bookName = findViewById(R.id.bookChosen);
+        nextPage = findViewById(R.id.next);
+        dateBox = findViewById(R.id.shopDate);
+        ArrayAdapter choseItem = new ArrayAdapter(this, android.R.layout.simple_spinner_item, bookNames);
+        choseItem.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        bookName.setAdapter(choseItem);
+        bookName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedBook = parent.getItemAtPosition(position).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        nextPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(getApplicationContext(), saveDetails.class);
+                in.putExtra("NAME", username.getText().toString());
+                in.putExtra("NUM", userNum.getText().toString());
+                in.putExtra("BOOK", selectedBook);
+                in.putExtra("DATE", selectedDate);
+                startActivity(in);
+            }
+        });
+    }
+    public void selectDate(View v){
+        Calendar cal = Calendar.getInstance();
+        int cYear = cal.get(Calendar.YEAR);
+        int cMonth = cal.get(Calendar.MONTH);
+        int cDate = cal.get(Calendar.DATE);
+        DatePickerDialog dialog = new DatePickerDialog(this, android.R.style.Theme_DeviceDefault_DialogWhenLarge,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+                        selectedDate = year + "/" + (month + 1) + "/" + date;
+                        dateBox.setText(selectedDate);
+                    }
+                }, cYear, cMonth, cDate);
+        dialog.show();
+    }
+}
+
+//saveDetails.java
+package com.example.booksystem;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class saveDetails extends AppCompatActivity {
+    EditText qty, price;
+    TextView res;
+    Button save, purchaseBook, countCust, disPlay;
+    MyDBHandler db;
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_save_details);
+        qty = findViewById(R.id.qty);
+        price = findViewById(R.id.price);
+        save = findViewById(R.id.save);
+        purchaseBook = findViewById(R.id.pBook);
+        countCust = findViewById(R.id.count);
+        res = findViewById(R.id.show);
+        disPlay = findViewById(R.id.display);
+        Intent in = getIntent();
+        String name = in.getStringExtra("NAME");
+        String number = in.getStringExtra("NUM");
+        String book = in.getStringExtra("BOOK");
+        String date = in.getStringExtra("DATE");
+        String quantity = qty.getText().toString();
+        String price = qty.getText().toString();
+
+        db = new MyDBHandler(getApplicationContext(), "Company", null, 1);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.insertRecord(name, number, book, date, quantity, price);
+                Toast.makeText(saveDetails.this, "inserted", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        purchaseBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String details = db.displayRecord(book);
+                res.setText(details);
+            }
+        });
+
+        countCust.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int count = db.displayCount();
+                res.setText("Number : " + count);
+            }
+        });
+
+        disPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String tableData = db.displayRecord();
+                res.setText(tableData);
+            }
+        });
+    }
+}
+
+//MyDBHandler
+package com.example.booksystem;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import androidx.annotation.Nullable;
+import androidx.core.database.sqlite.SQLiteDatabaseKt;
+
+public class MyDBHandler extends SQLiteOpenHelper {
+
+    public MyDBHandler(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory,
+                       @Nullable int version) {
+        super(context, name, factory, version);
+    }
+
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("create table customerDetail(name varchar(255), phnumber varchar(255), book varchar(255), date varchar(255), quantity varchar(255), price varchar(255))");
+    }
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+
+    public  void insertRecord(String name, String phNum, String book, String date, String qty, String price) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("insert into customerDetail values (?,?,?,?,?,?)", new String[]{name, phNum, book, date, qty, price});
+    }
+    public String displayRecord(String value) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from customerDetail where book = (?)", new String[]{value});
+        String tData = "";
+        while(cursor.moveToNext()) {
+            String n = cursor.getString(0);
+            String m = cursor.getString(1);
+            String b = cursor.getString(2);
+            String d = cursor.getString(3);
+            String q = cursor.getString(4);
+            String p = cursor.getString(5);
+            tData += n + "\t" + m+ "\t" + b+ "\t" +d+ "\t" +q+ "\t" +p+ "\n";
+        }
+        db.close();
+        return tData;
+    }
+
+    public String  displayRecord() {
+        int count = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from customerDetail", null);
+        String tData = "";
+        while(cursor.moveToNext()) {
+            String n = cursor.getString(0);
+            String m = cursor.getString(1);
+            String b = cursor.getString(2);
+            String d = cursor.getString(3);
+            String q = cursor.getString(4);
+            String p = cursor.getString(5);
+            tData += n + "\t" + m+ "\t" + b+ "\t" +d+ "\t" +q+ "\t" +p+ "\n";
+        }
+        db.close();
+        return tData;
+    }
+    public int displayCount() {
+        int count = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from customerDetail", null);
+        while(cursor.moveToNext())
+            count ++;
+        return count;
+    }
+
+    public void deleteRecord(String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("customerDetail","name=?",new String[]{name});
+    }
+
+    public void updateRecord(String name, String newPhnumber, String newBook, String newDate, String newQuantity, String newPrice) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Create a ContentValues object with the new values
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("phnumber", newPhnumber);
+        contentValues.put("book", newBook);
+        contentValues.put("date", newDate);
+        contentValues.put("quantity", newQuantity);
+        contentValues.put("price", newPrice);
+
+        // Update the database
+        db.update("customerDetail", contentValues, "name=?", new String[]{name});
+    }
+
+
+}
